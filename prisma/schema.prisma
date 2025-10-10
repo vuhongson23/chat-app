@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String
+  password String
+  avatar String?
+  bio String?
+  isOnline Boolean @default(false)
+  lastSeen DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("users")
+
+  //Relation
+  sentMessages               Message[]             @relation("MessageSender")
+  receivedMessages           Message[]             @relation("MessageReceiver")
+  sentFriendRequests         FriendRequest[]       @relation("FriendRequestSender")
+  receivedFriendRequests     FriendRequest[]       @relation("FriendRequestReceiver")
+  friendShip                 FriendShip[]          @relation("UserFriendships")
+  friendOf                   FriendShip[]          @relation("FriendOfUser")
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  content String @db.Text
+  isRead Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  senderId Int
+  receiverId Int
+
+  //Relation
+  sender User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId, receiverId, createdAt])
+  @@index([receiverId, isRead])
+  @@map("messages")
+}
+
+model FriendRequest {
+  id Int @id @default(autoincrement())
+  status RequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requesterId Int
+  recipientId Int
+
+  //Relation
+  requester User @relation("FriendRequestSender", fields: [requesterId], references: [id], onDelete: Cascade)
+  recipient User @relation("FriendRequestReceiver", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, recipientId])
+  @@index([recipientId, status])
+  @@map("friend_request")
+}
+
+model FriendShip {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId Int
+  friendId Int
+
+  //Relation
+  user User @relation("UserFriendships", fields: [userId], references: [id], onDelete: Cascade)
+  friend User @relation("FriendOfUser", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+  @@map("friendships")
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
