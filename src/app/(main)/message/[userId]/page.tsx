@@ -39,7 +39,7 @@ const initMsg: MessageType[] = [
   },
 ];
 
-const MessagePage = ({ messages = initMsg }: IMessagePageProps) => {
+const MessagePage = async ({ messages = initMsg }: IMessagePageProps) => {
   return (
     <div
       className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-[#FAFAFA]"
@@ -51,6 +51,7 @@ const MessagePage = ({ messages = initMsg }: IMessagePageProps) => {
       {messages?.length > 0 &&
         messages.map((message: MessageType) => (
           <div
+            key={message.id}
             className={`flex ${message.sender === "me" ? "justify-end" : ""}`}
           >
             <div

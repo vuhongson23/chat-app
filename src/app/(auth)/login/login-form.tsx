@@ -13,6 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 type FormValue = z.infer<typeof formSchema>;
 
@@ -37,9 +41,36 @@ const LoginForm = () => {
       password: "",
     },
   });
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmitForm = async (values: FormValue) => {
-    console.log("🚀 ~ handleSubmitForm ~ values:", values);
+    try {
+      setLoading(true);
+      const response = await fetch("api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      });
+      console.log("🚀 ~ handleSubmitForm ~ response:", response);
+      if (response.status === 200) {
+        toast.success("Đăng nhập thành công!!!");
+        const data = await response.json();
+        console.log("🚀 ~ handleSubmitForm ~ data:", data);
+        form.reset();
+        setLoading(false);
+        router.push("/message");
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleSubmitForm ~ error:", error);
+      setLoading(false);
+      toast.error("Đã có lỗi xảy ra!!!");
+    }
   };
   return (
     <div>
@@ -81,7 +112,9 @@ const LoginForm = () => {
             Bạn chưa có tài khoản?
           </Link>
           <div className="flex items-center justify-end !mt-3">
-            <Button type="submit">Đăng nhập</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? <Spinner /> : "Đăng nhập"}
+            </Button>
           </div>
         </form>
       </Form>

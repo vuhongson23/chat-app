@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import ToastProvider from "@/components/toast-provider";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        {children}
+        <ToastProvider />
+      </body>
     </html>
   );
 }
