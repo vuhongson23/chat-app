@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +9,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarTrigger,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
@@ -39,6 +40,14 @@ export function AppSidebar() {
       title: "Settings",
       url: "#",
       icon: Settings,
+    },
+  ];
+
+  const footer_items = [
+    {
+      title: "Logout",
+      url: "#",
+      icon: LogOut,
     },
   ];
   return (
@@ -86,6 +95,24 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarGroup className="pl-0">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {footer_items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -22,16 +22,19 @@ type FormValue = z.infer<typeof formSchema>;
 
 const formSchema = z
   .object({
-    userName: z.string().min(2).max(50),
-    email: z.email(),
+    email: z.email("Email không hợp lệ"),
+    userName: z
+      .string()
+      .min(2, "Tên người dùng phải có tối thiểu 2 kí tự")
+      .max(50, "Tên người dùng chỉ có tối đa 50 kí tự"),
     password: z
       .string()
-      .min(8, "Password must hava at least 8 characters")
+      .min(8, "Mật khẩu phải có ít nhất 8 kí tự")
       .regex(
         new RegExp(
           /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
         ),
-        "Password must hava at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number or special character "
+        "Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí tự số và 1 kí tự đặc biệt"
       ),
     confirmPassword: z.string(),
   })
@@ -69,9 +72,10 @@ const RegisterForm = () => {
         }),
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const data = await response.json();
         console.log("🚀 ~ handleSubmitForm ~ data:", data);
+
         toast.success("Đăng ký tài khoản thành công!!!");
         form.reset();
         router.push("/message");

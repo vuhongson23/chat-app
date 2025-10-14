@@ -1,3 +1,4 @@
+import { generateToken } from "@/lib/jwt";
 import prisma from "@/lib/prisma";
 import { compare } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -67,14 +68,25 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    // Generate token
+    const payload = { userId: user.id, email: user.email };
+    const { refreshToken, accessToken } = await generateToken(payload);
+
+    // Update refresh token vào DB
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken },
+    });
+
     // Tách password để trả về thông tin user
-    const { password: userPassword, ...userResponse } = user;
+    const { refreshToken: token, password: userPassword, ...userDetail } = user;
 
     return NextResponse.json(
       {
         success: true,
         message: "Đăng nhập thành công",
-        user: userResponse,
+        user: userDetail,
+        token: { accessToken: accessToken, refreshToken: refreshToken },
       },
       { status: 200 }
     );

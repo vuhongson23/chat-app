@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { generateToken } from "@/lib/jwt";
 
 const registerSchema = z
   .object({
@@ -12,12 +13,12 @@ const registerSchema = z
       .max(50, "Tên người dùng chỉ có tối đa 50 kí tự"),
     password: z
       .string()
-      .min(8, "Password must hava at least 8 characters")
+      .min(8, "Mật khẩu phải có ít nhất 8 kí tự")
       .regex(
         new RegExp(
           /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
         ),
-        "Password must hava at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number or special character "
+        "Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí tự số và 1 kí tự đặc biệt"
       ),
     confirmPassword: z.string(),
   })
@@ -82,16 +83,26 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
+    // Generate token
+    const payload = { userId: user.id, email: user.email };
+    const { refreshToken, accessToken } = await generateToken(payload);
+
+    // Update refresh token vào DB
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken },
+    });
+
     return NextResponse.json(
       {
         success: true,
         message: "Đăng ký thành công",
         user,
+        token: { refreshToken, accessToken },
       },
       { status: 201 }
     );
   } catch (error) {
-    console.log("Register error: ", error);
     return NextResponse.json(
       {
         success: false,

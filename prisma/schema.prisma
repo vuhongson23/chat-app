@@ -21,6 +21,7 @@ model User {
   password String
   avatar String?
   bio String?
+  refreshToken String?
   isOnline Boolean @default(false)
   lastSeen DateTime @default(now())
   createdAt DateTime @default(now())

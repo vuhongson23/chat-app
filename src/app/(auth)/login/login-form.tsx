@@ -57,13 +57,22 @@ const LoginForm = () => {
           password: values.password,
         }),
       });
-      console.log("🚀 ~ handleSubmitForm ~ response:", response);
       if (response.status === 200) {
+        //Thông báo đăng nhập thành công
         toast.success("Đăng nhập thành công!!!");
+
+        // Lưu token và user info vào local storage
         const data = await response.json();
-        console.log("🚀 ~ handleSubmitForm ~ data:", data);
+        window.localStorage.setItem("TOKEN", JSON.stringify(data.token));
+        window.localStorage.setItem("USER_INFOR", JSON.stringify(data.user));
+
+        // Reset form
         form.reset();
+
+        // Bỏ trạng thái loading
         setLoading(false);
+
+        // Điều hướng tới trang message
         router.push("/message");
       }
     } catch (error) {
