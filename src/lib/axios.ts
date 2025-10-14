@@ -1,3 +1,4 @@
+import { getDataLocal } from "@/lib/utils";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 // Tạo axios instance mới
@@ -8,14 +9,6 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-// Lấy data từ local storage
-const getDataLocal = (key: string): any => {
-  const data = localStorage.getItem(key);
-  const parseData = data && JSON.parse(data);
-
-  return parseData;
-};
 
 // Cấu hình interceptor
 // Request

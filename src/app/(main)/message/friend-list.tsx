@@ -1,4 +1,3 @@
-"use client";
 import FriendMessageCard from "@/components/friend-message-card";
 import {
   InputGroup,
@@ -12,29 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import axiosInstance, { axiosPublic } from "@/lib/axios";
 import { FriendMessageCardType } from "@/types/types";
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
 
 interface IFriendListProps {
   friendList?: FriendMessageCardType[];
 }
 
 const FriendList = ({ friendList = [] }: IFriendListProps) => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axiosPublic.get("/user/all");
-        console.log("🚀 ~ fetchUser ~ response:", response);
-      } catch (error) {
-        console.log("🚀 ~ FriendList ~ error:", error);
-      }
-    };
-    fetchUser();
-  }, []);
   return (
     <div
       className="w-[380px] border-r overflow-y-auto"

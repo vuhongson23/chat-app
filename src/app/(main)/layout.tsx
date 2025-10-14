@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
+import AuthGuard from "@/shared/gaurd/auth-guard";
+import { AuthProvider } from "@/shared/contexts/auth-context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,10 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <main>
-      <SidebarProvider>
-        <AppSidebar />
-        <div className="w-[100vw]">{children}</div>
-      </SidebarProvider>
+      <AuthProvider>
+        <AuthGuard>
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="w-[100vw]">{children}</div>
+          </SidebarProvider>
+        </AuthGuard>
+      </AuthProvider>
     </main>
   );
 }
