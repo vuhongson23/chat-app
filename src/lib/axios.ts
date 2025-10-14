@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
@@ -54,8 +54,25 @@ axiosInstance.interceptors.response.use(
         // Lấy refresh token từ local storage
         const { refreshToken } = getDataLocal("TOKEN");
 
+        // Tạo access token mới nếu có refresh token từ local storage
         if (refreshToken) {
-          // logic refresh access token
+          const response = await axiosPublic.post("/auth/refresh-token", {
+            refreshToken: refreshToken,
+          });
+
+          // Lưu access token mới vào local storage
+          const token = {
+            refreshToken,
+            accessToken: response?.data,
+          };
+          localStorage.setItem("TOKEN", JSON.stringify(token));
+
+          // Request lại với access token mới
+          if (originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${token.accessToken}`;
+          }
+
+          return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
         localStorage.clear();
