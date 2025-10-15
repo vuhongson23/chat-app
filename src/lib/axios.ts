@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
           // Lưu access token mới vào local storage
           const token = {
             refreshToken,
-            accessToken: response?.data,
+            accessToken: response?.data.accessToken,
           };
           localStorage.setItem("TOKEN", JSON.stringify(token));
 

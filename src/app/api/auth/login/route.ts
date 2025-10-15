@@ -91,7 +91,6 @@ export const POST = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (error) {
-    console.log("Login error: ", error);
     return NextResponse.json(
       {
         success: false,

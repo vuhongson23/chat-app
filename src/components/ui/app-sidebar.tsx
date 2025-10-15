@@ -100,7 +100,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarGroup className="pl-0">
+        <SidebarGroup className="px-0">
           <SidebarGroupContent>
             <SidebarMenu>
               {footer_items.map((item) => (
