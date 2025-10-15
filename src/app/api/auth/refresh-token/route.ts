@@ -59,7 +59,7 @@ export const POST = async (req: NextRequest) => {
         message: "Tạo access token mới thành công",
         accessToken: token.accessToken,
       },
-      { status: 200 }
+      { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
