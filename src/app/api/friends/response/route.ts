@@ -4,9 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
+    // Lấy user ID đang login
     const userId = await getUserIdFromHeader(req);
+
+    // Lấy param truyền lên từ client
     const { requestId, action } = await req.json();
 
+    // Kiểm tra xem friend request có tồn tại không
     const request = await prisma.friendRequest.findUnique({
       where: { id: requestId },
     });
@@ -21,6 +25,7 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    // Nếu action là 'ACCEPTED' thì lưu dữ liệu ở 2 phía người gửi và người nhận
     if (action === "ACCEPTED") {
       await prisma.friendShip.createMany({
         data: [
