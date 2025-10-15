@@ -34,3 +34,5 @@ export type UserType = {
   updatedAt?: string;
   lastSeen?: string;
 };
+
+export type ResponseType = "ACCEPTED" | "PENDING" | "REJECTED";

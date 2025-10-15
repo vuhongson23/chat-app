@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getDataLocal = (key: string): any => {
-  const data = localStorage.getItem(key);
+  const data = window.localStorage.getItem(key);
   const parseData = data && JSON.parse(data);
 
   return parseData;
