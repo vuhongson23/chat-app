@@ -1,3 +1,4 @@
+"use client";
 import { Calendar, Home, Inbox, Search, Settings, LogOut } from "lucide-react";
 import {
   Sidebar,
@@ -13,8 +14,11 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/shared/contexts/auth-context";
+import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
+  const { handleLogout } = useAuth();
   const items = [
     {
       title: "Home",
@@ -36,18 +40,18 @@ export function AppSidebar() {
       url: "#",
       icon: Search,
     },
+  ];
+
+  const footer_items = [
     {
       title: "Settings",
       url: "#",
       icon: Settings,
     },
-  ];
-
-  const footer_items = [
     {
       title: "Logout",
-      url: "#",
       icon: LogOut,
+      onClick: handleLogout,
     },
   ];
   return (
@@ -102,10 +106,10 @@ export function AppSidebar() {
               {footer_items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
-                    <Link href={item.url}>
+                    <div onClick={() => (item.onClick ? item.onClick() : {})}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </Link>
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
