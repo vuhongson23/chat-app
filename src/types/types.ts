@@ -16,6 +16,7 @@ export type FriendMessageCardType = {
   newMessageCount?: number;
 };
 
+// Messages
 export type MessageType = {
   id: number;
   content?: string;
@@ -23,6 +24,18 @@ export type MessageType = {
   time: string;
 };
 
+export type ConversationType = {
+  friendId: number;
+  name: string;
+  avatar: string;
+  lastSeen: string;
+  isOnline: boolean;
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+};
+
+// User
 export type UserType = {
   id?: number;
   name?: string;
@@ -35,4 +48,13 @@ export type UserType = {
   lastSeen?: string;
 };
 
-export type ResponseType = "ACCEPTED" | "PENDING" | "REJECTED";
+// Request
+export type RequestParamsType = {
+  url: string;
+  params?: any;
+};
+
+export type OptionsType = {
+  timeout?: number;
+  contentType?: "application/json" | "multipart/form-data";
+};

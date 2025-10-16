@@ -1,3 +1,4 @@
+"use client";
 import FriendMessageCard from "@/components/friend-message-card";
 import {
   InputGroup,
@@ -11,14 +12,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FriendMessageCardType } from "@/types/types";
+import { ConversationType, FriendMessageCardType } from "@/types/types";
 import { Search } from "lucide-react";
+import { useState } from "react";
 
 interface IFriendListProps {
   friendList?: FriendMessageCardType[];
 }
 
 const FriendList = ({ friendList = [] }: IFriendListProps) => {
+  const [conversationList, setConversationList] = useState<ConversationType[]>(
+    []
+  );
+
   return (
     <div
       className="w-[380px] border-r overflow-y-auto"

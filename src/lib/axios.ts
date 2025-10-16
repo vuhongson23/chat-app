@@ -1,4 +1,5 @@
 import { getDataLocal } from "@/lib/utils";
+import { OptionsType, RequestParamsType } from "@/types/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 // Tạo axios instance mới
@@ -92,3 +93,126 @@ export const axiosPublic = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+//=================================API method=====================================
+// Auth API method
+export const get = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosInstance.get(requestParams.url, {
+      params: requestParams.params,
+      timeout: options?.timeout || 10000,
+      headers: {
+        "Content-Type": options?.contentType || "application/json",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
+export const post = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosInstance.post(
+      requestParams.url,
+      requestParams.params,
+      {
+        timeout: options?.timeout || 10000,
+        headers: {
+          "Content-Type": options?.contentType || "application/json",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
+export const put = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosInstance.put(
+      requestParams.url,
+      requestParams.params,
+      {
+        timeout: options?.timeout || 10000,
+        headers: {
+          "Content-Type": options?.contentType || "application/json",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
+export const deleteApi = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosInstance.delete(requestParams.url, {
+      params: requestParams.params,
+      timeout: options?.timeout || 10000,
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
+// Public API method
+export const getNoAuth = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosPublic.get(requestParams.url, {
+      params: requestParams.params,
+      timeout: options?.timeout || 10000,
+      headers: {
+        "Content-Type": options?.contentType || "application/json",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
+export const postNoAuth = async (
+  requestParams: RequestParamsType,
+  options?: OptionsType
+) => {
+  try {
+    const response = await axiosPublic.post(
+      requestParams.url,
+      requestParams.params,
+      {
+        timeout: options?.timeout || 10000,
+        headers: {
+          "Content-Type": options?.contentType || "application/json",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
