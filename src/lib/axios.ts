@@ -11,6 +11,15 @@ const axiosInstance = axios.create({
   },
 });
 
+// Tạo instance cho các API không cần xác thực
+export const axiosPublic = axios.create({
+  baseURL: "http://localhost:3000/api",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 // Cấu hình interceptor
 // Request
 axiosInstance.interceptors.request.use(
@@ -41,9 +50,8 @@ axiosInstance.interceptors.response.use(
     };
 
     // Xử lý lỗi 401 và token hết hạn
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 500 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         // Lấy refresh token từ local storage
         const { refreshToken } = getDataLocal("TOKEN");
@@ -84,15 +92,6 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-// Tạo instance cho các API không cần xác thực
-export const axiosPublic = axios.create({
-  baseURL: "http://localhost:3000/api",
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 //=================================API method=====================================
 // Auth API method

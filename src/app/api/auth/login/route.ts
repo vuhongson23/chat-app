@@ -36,7 +36,12 @@ export const POST = async (req: NextRequest) => {
 
     const { email, password } = isValid.data;
 
-    if (!email || !password) return null;
+    if (!email || !password) {
+      return NextResponse.json(
+        { success: false, message: "Thiếu email hoặc mật khẩu" },
+        { status: 400 }
+      );
+    }
 
     // Kiểm tra user đã có trong DB chưa
     const user = await prisma.user.findUnique({

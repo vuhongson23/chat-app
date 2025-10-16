@@ -18,8 +18,8 @@ interface IFriendMessageCardProps {
 const FriendMessageCard = ({
   userId = "",
   avatar = "",
-  isSented,
-  isTyping,
+  isSented = false,
+  isTyping = false,
   message,
   sentTime,
   userName,
@@ -54,7 +54,7 @@ const FriendMessageCard = ({
           <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
             <Image
               priority
-              src={avatar}
+              src={avatar || "/images/default-profile.jpg"}
               alt="avatar"
               width={60}
               height={60}

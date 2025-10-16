@@ -12,18 +12,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ConversationType, FriendMessageCardType } from "@/types/types";
+import { getDataAPI } from "@/lib/api/api";
+import { ConversationType } from "@/types/types";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
-interface IFriendListProps {
-  friendList?: FriendMessageCardType[];
-}
-
-const FriendList = ({ friendList = [] }: IFriendListProps) => {
+const FriendList = () => {
   const [conversationList, setConversationList] = useState<ConversationType[]>(
     []
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getDataAPI("/message/conversations");
+        if (response.status === 200) {
+          const data = response?.data?.conversations.map(
+            (conversation: ConversationType) => {
+              return {
+                ...conversation,
+                lastMessageTime: dayjs(conversation.lastMessageTime).format(
+                  "HH:MM"
+                ),
+              };
+            }
+          );
+          setConversationList(data);
+        }
+      } catch (error) {
+        toast.error(`Lỗi: ${error}`);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div
@@ -60,17 +84,17 @@ const FriendList = ({ friendList = [] }: IFriendListProps) => {
       </div>
 
       <div className="flex flex-col">
-        {friendList.map((friend: FriendMessageCardType) => (
+        {conversationList.map((friend: ConversationType) => (
           <FriendMessageCard
-            key={friend.userName}
-            userId={friend.userId}
-            avatar={friend.avatar}
-            isSented={friend.isSented}
-            message={friend.message}
-            isTyping={friend.isTyping}
-            userName={friend.userName}
-            sentTime={friend.sentTime}
-            newMessageCount={friend.newMessageCount}
+            key={friend.friendId}
+            userId={String(friend.friendId)}
+            avatar={friend.avatar || ""}
+            // isSented={false} // Update sau
+            message={friend.lastMessage}
+            // isTyping={false} // Update sau
+            userName={friend.name}
+            sentTime={friend.lastMessageTime}
+            newMessageCount={friend.unreadCount}
           />
         ))}
       </div>

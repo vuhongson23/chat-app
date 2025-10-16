@@ -104,7 +104,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {footer_items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="cursor-pointer">
                   <SidebarMenuButton asChild tooltip={item.title}>
                     <div onClick={() => (item.onClick ? item.onClick() : {})}>
                       <item.icon />

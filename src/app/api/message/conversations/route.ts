@@ -5,7 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   const userId = await getUserIdFromHeader(req);
 
-  if (!userId) return null;
+  if (!userId) {
+    return NextResponse.json(
+      { success: false, message: "Không tìm thấy thông tin user" },
+      { status: 404 }
+    );
+  }
 
   try {
     const messages = await prisma.message.findMany({
@@ -90,7 +95,7 @@ export const GET = async (req: NextRequest) => {
     );
 
     // Ghép số tin nhắn chưa đọc của friend với user với object hội thoại
-    const conservations = friendIds.map((id, index) => {
+    const conversations = friendIds.map((id, index) => {
       const data = encountered.get(id);
       return {
         ...data,
@@ -99,7 +104,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     // Sắp xếp lại để đảm bảo luôn là tin nhắn có thời gian mới nhất xếp lên đầu
-    conservations.sort(
+    conversations.sort(
       (a, b) => b.lastMessageTime.getTime() - a.lastMessageTime.getTime()
     );
 
@@ -107,7 +112,7 @@ export const GET = async (req: NextRequest) => {
       {
         success: true,
         message: "Lấy danh sách hội thoại thành công",
-        data: conservations,
+        conversations,
       },
       { status: 200 }
     );

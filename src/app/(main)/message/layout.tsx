@@ -1,7 +1,4 @@
 import FriendList from "@/app/(main)/message/friend-list";
-import MessageFooter from "@/app/(main)/message/message-footer";
-import MessageHeader from "@/app/(main)/message/message-header";
-import { FriendMessageCardType } from "@/types/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,104 +11,10 @@ export default function MessageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const fakeFriends: FriendMessageCardType[] = [
-    {
-      userId: "1",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Ngọc Anh",
-      message: "Mai gặp nhau ở quán cũ nhé, mình tới muộn khoảng 10 phút.",
-      sentTime: "10:03",
-      isSented: false,
-      isTyping: false,
-      newMessageCount: 5,
-    },
-    {
-      userId: "2",
-      avatar:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Minh Tuấn",
-      message: "Ok, mình sẽ đợi. Đừng quên mang đồ nhé!",
-      sentTime: "09:58",
-      isSented: false,
-      isTyping: true,
-      newMessageCount: 2,
-    },
-    {
-      userId: "3",
-      avatar:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Hà Linh",
-      message: "",
-      sentTime: "08:20",
-      isSented: false,
-      isTyping: true, // sẽ hiện "Đang soạn..."
-      newMessageCount: 0,
-    },
-    {
-      userId: "4",
-      avatar:
-        "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Quang Huy",
-      message:
-        "Đã push code lên branch feature/ui. Bạn review giúp mình phần responsive với margin/padding nhé.",
-      sentTime: "Hôm qua",
-      isSented: true,
-      isTyping: false,
-      newMessageCount: 5,
-    },
-    {
-      userId: "5",
-      avatar:
-        "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Bích Ngọc",
-      message: "Tuyệt vời! Chúc mừng nhé 🎉",
-      sentTime: "2025-10-08",
-      isSented: false,
-      isTyping: false,
-      newMessageCount: 1,
-    },
-    {
-      userId: "6",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Anh Duy",
-      message: "Có tài liệu gửi bạn rồi, check inbox đi.",
-      sentTime: "07:05",
-      isSented: true,
-      isTyping: false,
-      newMessageCount: 6,
-    },
-    {
-      userId: "7",
-      avatar:
-        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Lan Phương",
-      message: "Ăn trưa thôi nào — hôm nay có promo giảm 30% ở quán X.",
-      sentTime: "11:30",
-      isSented: false,
-      isTyping: false,
-      newMessageCount: 3,
-    },
-    {
-      userId: "8",
-      avatar:
-        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      userName: "Trung Kiên",
-      message: "Ok luôn. Mình confirm sau nhé.",
-      sentTime: "09:00",
-      isSented: true,
-      isTyping: false,
-    },
-  ];
   return (
     <main className="flex w-full h-screen">
-      <FriendList friendList={fakeFriends} />
-      <div className="flex flex-col h-screen w-full">
-        <MessageHeader />
-        {children}
-        <MessageFooter />
-      </div>
+      <FriendList />
+      <div className="flex flex-col h-screen w-full">{children}</div>
     </main>
   );
 }
