@@ -3,24 +3,20 @@ import MessageFooter from "@/app/(main)/message/message-footer";
 import MessageHeader from "@/app/(main)/message/message-header";
 import { getDataAPI, postDataAPI } from "@/lib/api/api";
 import { useAuth } from "@/shared/contexts/auth-context";
+import { useSocket } from "@/shared/contexts/socket-context";
 import { MessageType } from "@/types/types";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import {
-  KeyboardEventHandler,
-  ReactElement,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MessagePage = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [messageValue, setMessageValue] = useState("");
+  const endMessageRef = useRef<HTMLDivElement>(null);
   const { friendId } = useParams();
   const { user } = useAuth();
-  const endMessageRef = useRef<HTMLDivElement>(null);
+  const socket = useSocket();
 
   const scrollToBottom = () => {
     if (endMessageRef.current) {
@@ -65,16 +61,38 @@ const MessagePage = () => {
         const newMessage = {
           id: data.id,
           content: data.content,
-          sender: user?.id === data.senderId ? "me" : "other",
+          sender: "me",
           time: dayjs(data.createdAt).format("HH:mm"),
         };
         setMessages((prev) => [...prev, newMessage]);
         setMessageValue("");
+
+        socket.emit("send_message", {
+          receiverId: Number(friendId),
+          message: {
+            id: data.id,
+            content: data.content,
+            sender: "other",
+            time: dayjs(data.createdAt).format("HH:mm"),
+          },
+        });
       }
     } catch (error) {
       console.log("🚀 ~ handleSendMessage ~ error:", error);
     }
   };
+
+  useEffect(() => {
+    const handleReceiveMessage = (message: MessageType) => {
+      setMessages((prev) => [...prev, message]);
+    };
+
+    socket.on("receive_message", handleReceiveMessage);
+
+    return () => {
+      socket.off("receive_message", handleReceiveMessage);
+    };
+  }, []);
 
   if (!friendId || !user?.id) return null;
 

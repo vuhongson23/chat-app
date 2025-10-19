@@ -2,6 +2,7 @@
 
 import socket from "@/lib/socket/socket-client";
 import { useAuth } from "@/shared/contexts/auth-context";
+import { redirect } from "next/navigation";
 import React, { createContext, useContext, useEffect } from "react";
 
 const SocketContext = createContext(socket);
