@@ -1,13 +1,5 @@
 "use client";
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  LogOut,
-  UsersRound,
-} from "lucide-react";
+import { Home, UsersRound, UserRoundPlus, UserSearch } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,54 +10,34 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarTrigger,
-  SidebarFooter,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@/shared/contexts/auth-context";
 
-export function AppSidebar() {
-  const { handleLogout } = useAuth();
+export default function FriendSidebar() {
   const items = [
     {
-      title: "Home",
+      title: "Trang chủ",
       url: "/news",
       icon: Home,
     },
     {
-      title: "Message",
-      url: "/message",
-      icon: Inbox,
+      title: "Lời mời kết bạn",
+      url: "/friend/request",
+      icon: UserRoundPlus,
     },
     {
-      title: "Friends",
-      url: "/friend",
+      title: "Tất cả bạn bè",
+      url: "/friend/all",
       icon: UsersRound,
     },
     {
-      title: "Call",
-      url: "/call",
-      icon: Calendar,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
+      title: "Tìm kiếm bạn bè",
+      url: "/friend/search",
+      icon: UserSearch,
     },
   ];
 
-  const footer_items = [
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings,
-    },
-    {
-      title: "Logout",
-      icon: LogOut,
-      onClick: handleLogout,
-    },
-  ];
   return (
     <Sidebar collapsible="icon">
       <SidebarTrigger />
@@ -111,24 +83,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarGroup className="px-0">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {footer_items.map((item) => (
-                <SidebarMenuItem key={item.title} className="cursor-pointer">
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <div onClick={() => (item.onClick ? item.onClick() : {})}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarFooter>
     </Sidebar>
   );
 }
