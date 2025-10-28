@@ -13,7 +13,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main>
+    <main className="bg-[#f2f4f7]">
       <AppProvider>{children}</AppProvider>
     </main>
   );

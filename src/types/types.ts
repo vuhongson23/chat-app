@@ -48,6 +48,25 @@ export type UserType = {
   lastSeen?: string;
 };
 
+export type FriendRequestType = {
+  id: number;
+  status: "ACCEPTED" | "PENDING" | "REJECTED";
+  createdAt: string;
+  updatedAt: string;
+  requesterId: number;
+  recipientId: number;
+  requester: {
+    id: number;
+    name: string;
+    isOnline: boolean;
+    avatar: string;
+    bio: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
+
 // Request
 export type RequestParamsType = {
   url: string;
