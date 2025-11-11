@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { postDataAPI } from '@/lib/api/api';
 import { UserRoundPlus } from 'lucide-react';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 interface IUserCard {
   name: string | undefined,
@@ -9,6 +11,17 @@ interface IUserCard {
 }
 
 const UserCard = ({avatar, id, name}: IUserCard) => {
+  const handleRequestFriend = async() => {
+    try {
+      const response = await postDataAPI('/friends/request', {receiverId: id})
+      if(response.status === 201) {
+        toast.success("Gửi lời mời kết bạn thành công!")
+      }
+    } catch (error) {
+      toast.error("Lời mời kết bạn đã tồn tại!")
+      
+    }
+  }
     return (
         <div className="flex items-center justify-between bg-white shadow-md rounded-lg p-5">
             <div className="flex items-center gap-x-3">
@@ -19,7 +32,7 @@ const UserCard = ({avatar, id, name}: IUserCard) => {
               </div>
             </div>
             <div>
-              <Button><UserRoundPlus />Kết bạn</Button>
+              <Button onClick={handleRequestFriend}><UserRoundPlus />Kết bạn</Button>
             </div>
           </div>
     );

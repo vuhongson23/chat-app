@@ -10,11 +10,11 @@ import { getDataAPI } from "@/lib/api/api";
 import { UserType } from "@/types/types";
 import { Search } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const SearchFriend = () => {
   const [name, setName] = useState("");
   const [users, setUser] = useState<UserType[]>([]);
-  console.log("🚀 ~ SearchFriend ~ users:", users);
   const debouncedValue = useDebounce(name);
 
   const handleSearchUser = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const SearchFriend = () => {
           setUser(response.data.data);
         }
       } catch (error) {
-        console.log("🚀 ~ handleSearchUser ~ error:", error);
+        toast.error("Đã xảy ra lỗi")
       }
     };
     fetchData();
@@ -60,7 +60,7 @@ const SearchFriend = () => {
         </h2>
         <div className="mt-5 flex flex-col gap-y-4">
           {users?.length > 0 ? (
-            users.map((user) => <UserCard key={user.id} name={user?.name} avatar={user?.avatar}></UserCard>)
+            users.map((user) => <UserCard key={user.id} name={user?.name} avatar={user?.avatar} id={user.id}></UserCard>)
           ) : (
             <div>Nodata</div>
           )}
