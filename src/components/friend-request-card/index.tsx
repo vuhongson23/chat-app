@@ -6,10 +6,16 @@ import { toast } from "react-toastify";
 interface IFriendRequestCard {
   avatar: string | null;
   name: string;
-  requestId: number;
+  requestId?: number;
+  variant?: "friend" | "request";
 }
 
-const FriendRequestCard = ({ avatar, name, requestId }: IFriendRequestCard) => {
+const FriendRequestCard = ({
+  avatar,
+  name,
+  requestId,
+  variant = "request",
+}: IFriendRequestCard) => {
   const handleFriendRequest = async (action: "ACCEPTED" | "REJECTED") => {
     try {
       const response = await postDataAPI("/friends/response", {
@@ -31,12 +37,12 @@ const FriendRequestCard = ({ avatar, name, requestId }: IFriendRequestCard) => {
   return (
     <div className="rounded-lg shadow-md">
       <Image
-        className="rounded-[8px_8px_0_0]"
+        className="w-full rounded-[8px_8px_0_0]"
         src={avatar ? avatar : "/images/default-profile.jpg"}
         width={193}
         height={193}
         alt="avatar"
-      ></Image>
+      />
       <div className="flex flex-col gap-y-[6px] bg-white rounded-[0_0_8px_8px] p-3">
         <h2 className="font-semibold text-[1.0625rem] hover:underline cursor-pointer">
           {name}
@@ -44,15 +50,31 @@ const FriendRequestCard = ({ avatar, name, requestId }: IFriendRequestCard) => {
         <span className="text-[#65686c] font-thin text-[.9375rem]">
           4 bạn chung
         </span>
-        <Button onClick={() => handleFriendRequest("ACCEPTED")}>
-          Xác nhận
-        </Button>
-        <Button
-          onClick={() => handleFriendRequest("REJECTED")}
-          variant={"outline"}
-        >
-          Xóa
-        </Button>
+        {variant === "request" ? (
+          <>
+            <Button onClick={() => handleFriendRequest("ACCEPTED")}>
+              Xác nhận
+            </Button>
+            <Button
+              onClick={() => handleFriendRequest("REJECTED")}
+              variant={"outline"}
+            >
+              Xóa
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => handleFriendRequest("ACCEPTED")}>
+              Trang cá nhân
+            </Button>
+            <Button
+              onClick={() => handleFriendRequest("REJECTED")}
+              variant={"outline"}
+            >
+              Xóa
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

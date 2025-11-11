@@ -20,16 +20,29 @@ const FriendRequest = () => {
   return (
     <div className="p-4 pt-5">
       <h1 className="font-bold text-[1.25rem] mb-4">Lời mời kết bạn</h1>
-      <div className="grid grid-cols-7 gap-3 flex-wrap">
-        {friendRequests.map((request) => (
-          <FriendRequestCard
-            key={request?.id}
-            avatar={request.requester.avatar}
-            name={request.requester.name}
-            requestId={request.id}
-          />
-        ))}
-      </div>
+      {friendRequests.length > 0 ? (
+        <div className="grid grid-cols-7 gap-3 flex-wrap">
+          {friendRequests.map((request) => (
+            <FriendRequestCard
+              key={request?.id}
+              avatar={request.requester.avatar}
+              name={request.requester.name}
+              requestId={request.id}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center h-[100vh]">
+          <div className="w-[50vw] flex flex-col items-center justify-center rounded-l p-3">
+            <img
+              src={"/images/no-data.png"}
+              alt="no-data"
+              className="w-[150px]"
+            />
+            <span className="font-bold text-2xl ">Không có lời mời kết bạn nào!</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
