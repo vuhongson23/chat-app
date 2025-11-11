@@ -2,7 +2,11 @@ import { Button } from '@/components/ui/button';
 import { UserRoundPlus } from 'lucide-react';
 import React from 'react';
 
-const UserCard = () => {
+interface IUserCard {
+
+}
+
+const UserCard = ({}: IUserCard) => {
     return (
         <div className="flex items-center justify-between bg-white shadow-md rounded-lg p-5">
             <div className="flex items-center gap-x-3">

@@ -1,10 +1,20 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
   try {
+    const searchParams = req.nextUrl.searchParams
+    const userName = searchParams.get('name')
+
+    const whereCondition = userName ? {
+      name: {
+        contains: userName,
+        mode: "insensitive" as const 
+      }
+    } : {}
     // Truy vấn data
     const data = await prisma.user.findMany({
+      where: whereCondition,
       select: {
         id: true,
         avatar: true,
@@ -35,6 +45,8 @@ export const GET = async () => {
       { status: 200 }
     );
   } catch (error) {
+    console.log("🚀 ~ GET ~ error:", error)
+    
     return NextResponse.json(
       {
         success: false,
