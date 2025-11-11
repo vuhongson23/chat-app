@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(
       {
         success: true,
-        user_list: data,
+        data,
       },
       { status: 200 }
     );
