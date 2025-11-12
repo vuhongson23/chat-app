@@ -26,7 +26,6 @@ import { useAuth } from "@/shared/contexts/auth-context";
 
 export function AppSidebar() {
   const { handleLogout, user } = useAuth();
-  console.log("🚀 ~ AppSidebar ~ user:", user)
   const items = [
     {
       title: "Home",
