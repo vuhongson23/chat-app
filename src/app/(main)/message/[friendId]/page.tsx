@@ -55,7 +55,6 @@ const MessagePage = () => {
         receiverId: Number(friendId),
       };
       const response = await postDataAPI("/message/send", payload);
-      console.log("🚀 ~ handleSendMessage ~ response:", response);
       if (response.status === 201) {
         const data = response?.data?.data;
         const newMessage = {
@@ -107,7 +106,7 @@ const MessagePage = () => {
         }}
       >
         {messages?.length > 0 &&
-          messages.map((message: MessageType) => (
+          messages?.map((message: MessageType) => (
             <div
               key={message.id}
               className={`flex ${message.sender === "me" ? "justify-end" : ""}`}

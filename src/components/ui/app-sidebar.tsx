@@ -25,7 +25,8 @@ import Image from "next/image";
 import { useAuth } from "@/shared/contexts/auth-context";
 
 export function AppSidebar() {
-  const { handleLogout } = useAuth();
+  const { handleLogout, user } = useAuth();
+  console.log("🚀 ~ AppSidebar ~ user:", user)
   const items = [
     {
       title: "Home",
@@ -76,16 +77,16 @@ export function AppSidebar() {
               <div>
                 <Image
                   priority
-                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=687&auto=format&fit=crop"
+                  src={user?.avatar ? user.avatar : "/images/default-profile.jpg"}
                   alt="Avatar"
                   width={60}
                   height={60}
                   className="w-12 h-12 rounded-lg object-cover"
                 />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Vũ Hồng Sơn</span>
+                  <span className="truncate font-semibold">{user?.name}</span>
                   <span className="truncate text-xs text-slate-500">
-                    sonvuvt123@gmail.com
+                    {user?.email}
                   </span>
                 </div>
               </div>

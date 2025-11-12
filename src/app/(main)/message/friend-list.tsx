@@ -29,7 +29,7 @@ const FriendList = () => {
       try {
         const response = await getDataAPI("/message/conversations");
         if (response.status === 200) {
-          const data = response?.data?.conversations.map(
+          const data = response?.data?.conversations?.map(
             (conversation: ConversationType) => {
               return {
                 ...conversation,
@@ -84,7 +84,7 @@ const FriendList = () => {
       </div>
 
       <div className="flex flex-col">
-        {conversationList.map((friend: ConversationType) => (
+        {conversationList?.map((friend: ConversationType) => (
           <FriendMessageCard
             key={friend.friendId}
             userId={String(friend.friendId)}

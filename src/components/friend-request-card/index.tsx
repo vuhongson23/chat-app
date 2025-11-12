@@ -8,6 +8,7 @@ interface IFriendRequestCard {
   name: string;
   requestId?: number;
   variant?: "friend" | "request";
+  onReload?: () => void
 }
 
 const FriendRequestCard = ({
@@ -15,7 +16,9 @@ const FriendRequestCard = ({
   name,
   requestId,
   variant = "request",
+  onReload = () => {}
 }: IFriendRequestCard) => {
+
   const handleFriendRequest = async (action: "ACCEPTED" | "REJECTED") => {
     try {
       const response = await postDataAPI("/friends/response", {
@@ -25,6 +28,7 @@ const FriendRequestCard = ({
       if (response.status === 200) {
         if (action === "ACCEPTED") {
           toast.success("Kết bạn thành công");
+          onReload()
         } else {
           toast.success("Đã từ chối lời mời kết bạn");
         }
@@ -64,11 +68,11 @@ const FriendRequestCard = ({
           </>
         ) : (
           <>
-            <Button onClick={() => handleFriendRequest("ACCEPTED")}>
+            <Button onClick={() => {}}>
               Trang cá nhân
             </Button>
             <Button
-              onClick={() => handleFriendRequest("REJECTED")}
+              onClick={() => {}}
               variant={"outline"}
             >
               Xóa
