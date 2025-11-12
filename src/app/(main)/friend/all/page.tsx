@@ -47,6 +47,7 @@ const AllFriend = () => {
               key={friend?.id}
               avatar={friend.friend.avatar}
               name={friend.friend.name}
+              friendId={friend.friend.id}
               variant="friend"
             />
           ))}

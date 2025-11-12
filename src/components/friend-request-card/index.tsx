@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { postDataAPI } from "@/lib/api/api";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface IFriendRequestCard {
   avatar: string | null;
   name: string;
   requestId?: number;
+  friendId?: number
   variant?: "friend" | "request";
   onReload?: () => void
 }
@@ -16,8 +18,10 @@ const FriendRequestCard = ({
   name,
   requestId,
   variant = "request",
+  friendId,
   onReload = () => {}
 }: IFriendRequestCard) => {
+  const router = useRouter()
 
   const handleFriendRequest = async (action: "ACCEPTED" | "REJECTED") => {
     try {
@@ -37,6 +41,10 @@ const FriendRequestCard = ({
       toast.error(`Đã có lỗi xảy ra: ${error}`);
     }
   };
+
+  const handleChat = () => {
+    router.push(`/message/${friendId}`)
+  }
 
   return (
     <div className="rounded-lg shadow-md">
@@ -68,8 +76,8 @@ const FriendRequestCard = ({
           </>
         ) : (
           <>
-            <Button onClick={() => {}}>
-              Trang cá nhân
+            <Button onClick={handleChat}>
+              Nhắn tin
             </Button>
             <Button
               onClick={() => {}}
